@@ -5,7 +5,7 @@ changeTheme(name)
 */
 const themes = [
     {
-        name: 'crc',
+        name: 'default',
         theme: {
             light: {
                 primary: '#A976D2',
@@ -16,6 +16,7 @@ const themes = [
                 success: '#4CAF5F',
                 warning: '#1FC107',
                 text: 'black',
+    			background: 'white',
             },
             dark: {
                 primary: '#197612',
@@ -26,6 +27,7 @@ const themes = [
                 success: '#CCAF50',
                 warning: '#1FC107',
                 text: 'white',
+				background: 'black',
             }
         }
     },
@@ -41,6 +43,7 @@ const themes = [
                 success: '#4CAF50',
                 warning: '#AFC107',
                 text: 'black',
+			    background: 'white',
             },
             dark: {
                 primary: '#1976D2',
@@ -51,6 +54,7 @@ const themes = [
                 success: '#4CAF50',
                 warning: '#FFC107',
                 text: 'white',
+				background: 'black',
             }
         }
     },
@@ -76,6 +80,7 @@ const themes = [
                 success: '#1CAF50',
                 warning: '#1FC107',
                 text: 'white',
+				background: 'black',
             }
         }
     },
@@ -91,6 +96,7 @@ const themes = [
                 success: '#ACAF50',
                 warning: '#AFC107',
                 text: 'black',
+			    background: 'white',
             },
             dark: {
                 primary: '#1936D2',
@@ -101,6 +107,7 @@ const themes = [
                 success: '#4C3F50',
                 warning: '#FF3107',
                 text: 'white',
+				background: 'black',
             }
         }
     },
@@ -116,6 +123,7 @@ const themes = [
                 success: '#FCAF50',
                 warning: '#FFC1F7',
                 text: 'black',
+			    background: 'white',
             },
             dark: {
                 primary: '#197612',
@@ -126,6 +134,7 @@ const themes = [
                 success: '#4C1150',
                 warning: '#1FC107',
                 text: 'white',
+				background: 'black',
             }
         }
     },        
