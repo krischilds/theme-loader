@@ -1,15 +1,18 @@
 <template>
-  <div style="display:none;"/>
+  <div style="display:block">
+    <div>{{themeName}}</div>
+    <div>{{isDark ? "DARK" : "LIGHT"}}</div>
+  </div>
 <!--
-  --bc-primary:#A976D2; 
-  --bc-secondary:#1B4242; 
-  --bc-accent:#82C1FF; 
-  --bc-error:#AF5D52; 
-  --bc-info:#B196E3; 
-  --bc-success:#4CAF5F; 
-  --bc-warning:#1FC107; 
-  --bc-text:black;
-  --bc-background:white;
+  --bc-primary: #A976D2; 
+  --bc-secondary: #1B4242; 
+  --bc-accent: #82C1FF; 
+  --bc-error: #AF5D52; 
+  --bc-info: #B196E3; 
+  --bc-success: #4CAF5F; 
+  --bc-warning: #1FC107; 
+  --bc-text: black;
+  --bc-background: white;
   -->
 </template>
 
@@ -28,64 +31,44 @@ export default {
     })
   },
   methods: {
-    // initThemes
-    // setTheme + setTheme defualt
-    // -- supporting functions
-    //    - buildStyles
-    //    - set css vars depending on config
-    //        - set vuetify
-    //        - set bs
-    //        - set custom (i.e. --bc-primary)
     getTheme(name) {
       return this.themes.find(t=> {
         return t.name === name;
       });
     },    
     setTheme(themeName) {
+      if (!themeName) return;
       const theme = this.getTheme(themeName);
-      if (!theme) {
-        //console.error("Theme not found: " + themeName);
-        return;
-      }
+      if (!theme) return;
 
-      const colors = this.isDark ? theme.theme.dark : theme.theme.light
+      const useVuetify = !!this.vuetify;
+      const variant = this.isDark ? "dark" : "light"; 
+      const colors = theme.theme[variant];
+
       Object.keys(colors).forEach((key) => {        
-        // const cssKey = `--${this.customPrefix}-${key}`;
         const cssKey = `--bc-${key}`;
         const cssValue = colors[key];
-        this.root.style.setProperty(cssKey, cssValue);        
+
+        // update bc theme
+        this.root.style.setProperty(cssKey, cssValue);
+        
+        // update vuetify theme
+        if (useVuetify) 
+          this.vuetify.themes.theme[variant][key] = cssValue;
       });
-    
-      this.currentTheme = themeName;
     }
-  },
-  computed: {
-    themeKeys() {
-      return this.themes.map(t=> {
-        return t.name;
-      })
-      //return Object.keys(themes);
-    }    
   },
   watch: {
     themeName(v) {
       this.setTheme(v);
     },
-    isDark(v) {
-      console.log(v);
-      if (this.themeName)
-        this.setTheme(this.themeName);
+    isDark() {
+      this.setTheme(this.themeName);
     }
   },
   mounted() {
     this.root = document.documentElement;
     this.setTheme(this.themeName);
-    /*    
-    const self = this;
-    window.setTimeout(function() {
-      self.setTheme('pesticides');
-    }, 3000);
-    */
   }  
 };
 </script>
@@ -93,17 +76,18 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 
-  $colors: (primary secondary accent error info warning success); // TODO: make dynamic
-
-  $bg-default: var(--bc-background); // usually white (light theme) and black (dark theme), but could be anything
-  $text-default: var(--bc-text); // black for light theme, white for dark
+  $colors: (primary secondary accent error info warning success);
+  $bg-default: var(--bc-background); // default background color
+  $text-default: var(--bc-text); // default text color
 
   @mixin createClasses($name, $color) {
 
     // override vuetify on bootstrap
+    /*
      .#{$name} {
       background: var(--bc-#{$name}) !important;
     }
+    */
 
     /* create all backgrounds:
       bc-primary, bc-secondary, etc.. */
