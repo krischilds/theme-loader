@@ -1,75 +1,72 @@
 <template>
-  <div id="app">
-    <ThemeLoader :themes="themes" :themeName="themeName" :isDark="isDark"/>
-    <ul style="width:80%">
-    <li v-for="c in colors" :key="c" class="list-items">
-      <div :class="`bc-${c}`">{{ c }} background</div>
-      <button :class="`bc-btn--${c}`">{{ c }} button</button>
-      <div :class="`bc-header--${c}`">Message</div>
-    </li>
-    </ul>
+  <v-app>    
+    <v-app-bar app primary dark>
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          transition="scale-transition"
+          width="40"
+        />
 
-    <ul style="width:80%">
-    <li v-for="c in colors" :key="c" class="list-items">
-      <div :class="`${c}`">OVERRIDE {{ c }} background</div>
-    </li>
-    </ul>
-    
-    <button v-for="t in themeKeys" @click="setThemeName(t)" :key="t">Set theme {{t}}</button>
+        <v-img
+          alt="Vuetify Name"
+          class="shrink mt-1 hidden-sm-and-down"
+          contain
+          min-width="100"
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          width="100"
+        />
+      </div>
 
-    <button @click="setIsDark(isDark)">Set {{isDark ? "Light" : "Dark"}}</button>
-    
-  </div>
+      <v-spacer></v-spacer>
+
+      <v-btn
+        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Latest Release</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <theme-loader :themes="themes" themeName="vetdrugs" :isDark="isDark" :vuetify="vuetify"/>
+      <p>This is {{isDark ? "dark" : "light"}}</p>
+      <button @click="isDark = !isDark">Toggle {{isDark ? "dark" : "light"}} theme</button>
+      <div class="bc-primary">primary</div>
+      <div class="bc-secondary">secondary</div>
+      <div class="bc-accent">accent</div>
+      <div>Vuetify</div>
+      <div class="primary">primary</div>
+      <div class="secondary">secondary</div>
+      <div class="accent">accent</div>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import ThemeLoader from "./components/ThemeLoader.vue";
 import themes from "./themes";
+import ThemeLoader from './components/ThemeLoader.vue';
 
 export default {
   name: "App",
-  data() {
-    return {
-      themes,
-      colors: [],
-      isDark: false,
-      themeName: null,
-      themeKeys: [],
-    };
-  },
+
   components: {
-    ThemeLoader,
+    'theme-loader': ThemeLoader
   },
-  methods: {
 
-    setThemeName(name) {
-      this.themeName = name;
-    },
-
-    setIsDark(isDark) {
-      this.isDark = !isDark;
-    }
-  },
+  data: () => ({
+    themes,
+    isDark: false,
+    vuetify: null,
+    //
+  }),
   mounted() {
-
-    this.themeKeys = this.themes.map(t=> {
-      return t.name;
-    });
-
-    this.themeName = this.themeKeys[0];
-
-    this.colors = Object.keys(this.themes[0].theme.light).filter((item) => {
-      return item !== "text" && item !== "background";
-    });
-  },
+    this.vuetify = this.$vuetify.theme;
+  }
 };
 </script>
-
-<style lang="scss">
-.list-items {
-  div {
-    margin: 10px;
-  }
-}
-
-</style>
